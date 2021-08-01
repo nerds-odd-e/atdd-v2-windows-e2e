@@ -16,11 +16,6 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-
-sourceCompatibility = 8
-
 repositories {
     mavenCentral()
 }
@@ -41,14 +36,12 @@ ext {
 }
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-web')
-    annotationProcessor('org.projectlombok:lombok:1.18.18')
     testAnnotationProcessor('org.projectlombok:lombok:1.18.18')
-    compile('org.projectlombok:lombok:1.18.18')
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("mysql:mysql-connector-java:8.0.13")
-
+    testImplementation('org.projectlombok:lombok:1.18.18')
+    testImplementation('org.springframework.boot:spring-boot-starter-web')
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation("mysql:mysql-connector-java:8.0.13")
     testImplementation("io.cucumber:cucumber-java:6.10.2")
     testImplementation("io.cucumber:cucumber-spring:6.10.2")
     testImplementation("org.assertj:assertj-core:3.19.0")
@@ -56,10 +49,6 @@ dependencies {
     testImplementation "org.awaitility:awaitility:4.0.3"
     testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
     testImplementation group: 'org.mock-server', name: 'mockserver-client-java', version: '5.4.1'
-    testImplementation(platform('org.junit:junit-bom:5.7.1'))
-    testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.9.0'
-    testImplementation group: 'io.appium', name: 'java-client', version: '7.5.1'
     testImplementation "com.github.leeonky:JSONassert-extend-comparator:${jsonAssertExtendComparator}"
     testImplementation "com.github.leeonky:jfactory:${jfactory}"
     testImplementation "com.github.leeonky:jfactory-cucumber:${jfactoryCucumber}"
@@ -78,3 +67,5 @@ task cucumber(type: JavaExec) {
             '--glue', 'com.github.leeonky.jfactory.cucumber',
             'src/test/resources']
 }
+
+tasks.bootWar { enabled = false }
