@@ -9,12 +9,15 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.zh_cn.并且;
 import io.cucumber.java.zh_cn.当;
 import io.cucumber.java.zh_cn.那么;
+import lombok.SneakyThrows;
+import org.mockserver.matchers.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.function.UnaryOperator;
 
 import static com.odde.atddv2.entity.Order.OrderStatus.delivering;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,5 +84,16 @@ public class ApiSteps {
     public void 订单的状态为(String order, String status) {
         await().untilAsserted(() -> assertThat(orderRepo.findByCode(order))
                 .hasFieldOrPropertyWithValue("status", OrderStatus.valueOf(status)));
+    }
+
+    @SneakyThrows
+    @并且("当前时间为{string}")
+    public void 当前时间为(String time) {
+        mockServer.getJson("/clock", UnaryOperator.identity(), String.format("\"%s\"", time));
+    }
+
+    @当("订单任务运行时")
+    public void 订单任务运行时() {
+        mockServer.getJson("/task", UnaryOperator.identity(), Times.exactly(1), "true");
     }
 }

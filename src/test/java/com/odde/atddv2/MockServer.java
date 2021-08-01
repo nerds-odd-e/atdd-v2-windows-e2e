@@ -11,6 +11,7 @@ import java.util.function.UnaryOperator;
 
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class MockServer {
     @Autowired
@@ -23,9 +24,13 @@ public class MockServer {
     }
 
     public void getJson(String path, UnaryOperator<HttpRequest> params, String response) {
-        mockServerClient.when(params.apply(request().withMethod("GET").withPath(path)), Times.unlimited())
+        getJson(path, params, Times.unlimited(), response);
+    }
+
+    public void getJson(String path, UnaryOperator<HttpRequest> params, Times times, String response) {
+        mockServerClient.when(params.apply(request().withMethod("GET").withPath(path)), times)
                 .respond(response().withStatusCode(200)
-                        .withHeader("Content-Type", "application/json")
+                        .withHeader(CONTENT_TYPE, "application/json")
                         .withBody(response));
     }
 }

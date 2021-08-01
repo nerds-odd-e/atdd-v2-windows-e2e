@@ -24,3 +24,6 @@ mock-server:
 
 binstd-endpoint:
   key: test
+
+standalone-dev-endpoint:
+  url: http://mock-server.tool.net:9081
