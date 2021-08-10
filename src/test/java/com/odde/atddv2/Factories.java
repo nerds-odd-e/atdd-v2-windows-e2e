@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.ArrayList;
 
 @Configuration
 public class Factories {
@@ -21,7 +23,14 @@ public class Factories {
 
     @Bean
     public RestTemplate createRestTemplate() {
-        return new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setInterceptors(new ArrayList<ClientHttpRequestInterceptor>() {{
+            add((request, body, execution) -> {
+                request.getHeaders().add("token", Api.getToken());
+                return execution.execute(request, body);
+            });
+        }});
+        return restTemplate;
     }
 
     @SneakyThrows

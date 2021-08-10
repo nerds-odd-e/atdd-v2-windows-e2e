@@ -14,13 +14,16 @@ import java.net.URI;
 
 public class Api {
     public final static PatternComparator COMPARATOR = PatternComparator.defaultPatternComparator();
-    private String response, token;
-
+    private static String token;
+    private String response;
     @Autowired
     private UserRepo userRepo;
-
     @Autowired
     private RestTemplate restTemplate;
+
+    public static String getToken() {
+        return token;
+    }
 
     @Before("@api-login")
     public void apiLogin() {
@@ -32,13 +35,12 @@ public class Api {
 
     public void get(String path) {
         response = restTemplate.exchange(RequestEntity.get(makeUri("/api/" + path))
-                .header("Accept", "application/json").header("token", token)
+                .header("Accept", "application/json")
                 .build(), String.class).getBody();
     }
 
     @SneakyThrows
     public void responseShouldMatchJson(String json) {
-//        JSONAssert.assertEquals(json, response, JSONCompareMode.NON_EXTENSIBLE);
         try {
             String responseBodyNoNewLine = json.replace('\n', ' ');
             JSONAssert.assertEquals("[" + responseBodyNoNewLine + "]", "[" + response + "]", COMPARATOR);
@@ -53,7 +55,7 @@ public class Api {
 
     public void post(String path, Object body) {
         response = restTemplate.exchange(RequestEntity.post(makeUri("/api/" + path))
-                .header("Accept", "application/json").header("token", token)
+                .header("Content-Type", "application/json")
                 .body(body), String.class).getBody();
     }
 
