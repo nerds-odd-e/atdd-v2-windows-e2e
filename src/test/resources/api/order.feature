@@ -17,6 +17,24 @@
       }]
     """
 
+  场景: 订单详情 - 无物流
+    假如存在如下订单:
+      | code  | productName | total | recipientName | recipientMobile | recipientAddress | status     |
+      | SN001 | 电脑          | 19999 | 张三            | 13085901735     | 上海市长宁区           | delivering |
+    当API查询订单"SN001"详情时
+    那么返回如下订单
+    """
+      {
+        "code": "SN001",
+        "productName": "电脑",
+        "total": 19999,
+        "recipientName": "张三",
+        "recipientMobile": "13085901735",
+        "recipientAddress": "上海市长宁区",
+        "status": "delivering"
+      }
+    """
+
   场景: 订单详情
     假如存在如下订单:
       | code  | productName | total | recipientName | recipientMobile | recipientAddress | status     | deliverNo     |
