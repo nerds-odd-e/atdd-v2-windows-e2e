@@ -66,7 +66,6 @@
         "recipientAddress": "** is String",
         "status": "delivering",
         "deliveredAt": "** is String",
-        "lines": [],
         "logistics": {
             "deliverNo": "4313751158896",
             "companyCode": "yunda",
