@@ -9,22 +9,7 @@
       "code": "SN001",
       "productName": "电脑",
       "total": "19999",
-      "recipientName": "张三",
-      "recipientMobile": "13085901735",
-      "recipientAddress": "上海市长宁区",
-      "status": "delivering",
-      "deliveredAt": "2021-04-16T23:51:55Z",
-      "lines": [{
-        "_": "(订单项)",
-        "itemName": "MacBook",
-        "price": 19999,
-        "quantity": 1
-       }, {
-        "_": "(订单项)",
-        "itemName": "TouchPad",
-        "price": 0,
-        "quantity": 1
-       }]
+      "status": "toBeDelivered"
     }
     """
     当API查询订单时
@@ -34,24 +19,11 @@
         "code": "SN001",
         "productName": "电脑",
         "total": 19999,
-        "recipientName": "张三",
-        "recipientMobile": "13085901735",
-        "recipientAddress": "上海市长宁区",
-        "status": "delivering",
-        "deliveredAt": "2021-04-16 23:51:55",
-        "lines": [{
-          "itemName": "MacBook",
-          "price": 19999,
-          "quantity": 1
-        }, {
-          "itemName": "TouchPad",
-          "price": 0,
-          "quantity": 1
-        }]
+        "status": "toBeDelivered"
       }]
     """
 
-  场景: 订单详情
+  场景: 订单详情 - 查询物流
     假如存在"已发货的 订单":
       | code  | deliverNo     |
       | SN001 | 4313751158896 |
