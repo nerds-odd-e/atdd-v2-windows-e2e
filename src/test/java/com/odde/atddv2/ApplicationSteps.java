@@ -3,6 +3,7 @@ package com.odde.atddv2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.leeonky.jfactory.JFactory;
+import com.github.leeonky.jfactory.cucumber.JData;
 import com.odde.atddv2.entity.Order;
 import com.odde.atddv2.entity.User;
 import com.odde.atddv2.page.HomePage;
@@ -20,12 +21,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.test.context.ContextConfiguration;
 
+import static org.awaitility.Awaitility.await;
+
 @ContextConfiguration(classes = {CucumberConfiguration.class}, loader = SpringBootContextLoader.class)
 @CucumberContextConfiguration
 public class ApplicationSteps {
 
     @Autowired
     JFactory jFactory;
+    @Autowired
+    JData jData;
     @Autowired
     private HomePage homePage;
     @Autowired
@@ -95,5 +100,12 @@ public class ApplicationSteps {
     public void 用如下数据录入订单(DataTable table) {
         查询订单时();
         orderPage.addOrder(table.asMaps().get(0));
+    }
+
+    @那么("{string}最终应为:")
+    public void 最终应为(String queryExpression, String dalExpression) {
+        await().ignoreExceptions().untilAsserted(() -> {
+            jData.should(queryExpression, dalExpression);
+        });
     }
 }

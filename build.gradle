@@ -60,7 +60,7 @@ dependencies {
     testImplementation "com.github.leeonky:jfactory-cucumber:${jfactoryCucumber}"
     testImplementation "com.github.leeonky:jfactory-repo-jpa:${jfactoryRepoJpa}"
     testImplementation "org.reflections:reflections:0.9.12"
-    testImplementation 'com.github.leeonky:bean-util:0.2.2'
+    testImplementation 'com.github.leeonky:bean-util:0.2.9'
     testImplementation 'com.github.leeonky:DAL-java:0.0.17'
 }
 

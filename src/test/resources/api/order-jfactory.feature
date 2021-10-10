@@ -57,38 +57,31 @@
     当API查询订单"SN001"详情时
     那么返回如下订单
     """
-      {
-        "code": "SN001",
-        "productName": "** is String",
-        "total": "** is Number",
-        "recipientName": "** is String",
-        "recipientMobile": "** is String",
-        "recipientAddress": "** is String",
-        "status": "delivering",
-        "deliveredAt": "** is String",
-        "logistics": {
-            "deliverNo": "4313751158896",
-            "companyCode": "yunda",
-            "companyName": "韵达快运",
-            "companyLogo": "https://api.jisuapi.com/express/static/images/logo/80/yunda.png",
-            "details": [
-                {
-                    "time": "2021-04-16 23:51:55",
-                    "status": "【潍坊市】已离开 山东潍坊分拨中心；发往 成都东地区包"
-                },
-                {
-                    "time": "2021-04-16 23:45:47",
-                    "status": "【潍坊市】已到达 山东潍坊分拨中心"
-                },
-                {
-                    "time": "2021-04-16 16:47:35",
-                    "status": "【潍坊市】山东青州市公司-赵良涛(13606367012) 已揽收"
-                }
-            ],
-            "deliveryStatus": "在途中",
-            "isSigned": "未签收"
+      "**
+      :{
+        logistics: {
+          deliverNo: '4313751158896'
+          companyCode: 'yunda'
+          companyName: '韵达快运'
+          companyLogo: 'https://api.jisuapi.com/express/static/images/logo/80/yunda.png'
+          details: [
+              {
+                  time: '2021-04-16 23:51:55'
+                  status: '【潍坊市】已离开 山东潍坊分拨中心；发往 成都东地区包'
+              }
+              {
+                  time: '2021-04-16 23:45:47'
+                  status: '【潍坊市】已到达 山东潍坊分拨中心'
+              }
+              {
+                  time: '2021-04-16 16:47:35'
+                  status: '【潍坊市】山东青州市公司-赵良涛(13606367012) 已揽收'
+              }
+          ]
+          deliveryStatus: '在途中'
+          isSigned: '未签收'
         }
-      }
+      }"
     """
 
   场景: 订单发货
@@ -99,9 +92,11 @@
     当通过API发货订单"SN001"，快递单号为"SF001"
     那么"订单.code[SN001]"应为:
     """
-      .deliveredAt + '' = '2000-05-10T20:00:00Z' and
-      .deliverNo = 'SF001' and
-      .status + '' = 'delivering'
+      :{
+        deliveredAt: '2000-05-10T20:00:00Z'
+        deliverNo: 'SF001'
+        status: 'delivering'
+      }
     """
 
   场景: 订单自动完成
@@ -115,6 +110,15 @@
       | code      |
       | 状态符合时间不符合 |
     当订单任务运行时
-    那么订单"状态和时间都符合"的状态为"done"
-    那么订单"状态不符的时间符合"的状态为"toBeDelivered"
-    那么订单"状态符合时间不符合"的状态为"delivering"
+    那么"订单.code[状态和时间都符合]"最终应为:
+    """
+      status: 'done'
+    """
+    那么"订单.code[状态不符的时间符合]"应为:
+    """
+      status: 'toBeDelivered'
+    """
+    那么"订单.code[状态符合时间不符合]"应为:
+    """
+      status: 'delivering'
+    """
