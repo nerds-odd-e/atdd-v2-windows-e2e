@@ -1,10 +1,10 @@
 package com.odde.atddv2;
 
+import io.appium.java_client.windows.WindowsDriver;
 import lombok.SneakyThrows;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -31,12 +31,6 @@ public class Browser {
         getWebDriver().get(String.format("http://%s:%d%s", hostName, getPort(), path));
     }
 
-    private WebDriver getWebDriver() {
-        if (webDriver == null)
-            webDriver = createWebDriver();
-        return webDriver;
-    }
-
     public void inputTextByPlaceholder(String placeholder, String text) {
         waitElement("//*[@placeholder='" + placeholder + "']").sendKeys(text);
     }
@@ -59,7 +53,10 @@ public class Browser {
 
     @SneakyThrows
     public WebDriver createWebDriver() {
-        return new RemoteWebDriver(new URL("http://web-driver.tool.net:4444"), DesiredCapabilities.chrome());
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("app", "C:\\Users\\Joseph\\code\\shop_app\\build\\windows\\runner\\Debug\\shop_app.exe");
+        return new WindowsDriver(new URL("http://127.0.0.1:4723"), capabilities);
+//        return new RemoteWebDriver(new URL("http://web-driver.tool.net:4444"), DesiredCapabilities.chrome());
     }
 
     public void selectTextByPlaceholder(String placeholder, String text) {
@@ -69,6 +66,12 @@ public class Browser {
 
     public void shouldNotHaveText(String text) {
         await().untilAsserted(() -> assertThat(getWebDriver().findElements(xpath("//*[text()='" + text + "']"))).isEmpty());
+    }
+
+    public WebDriver getWebDriver() {
+        if (webDriver == null)
+            webDriver = createWebDriver();
+        return webDriver;
     }
 
     private Integer getPort() {

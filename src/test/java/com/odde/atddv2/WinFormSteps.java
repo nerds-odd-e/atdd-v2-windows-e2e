@@ -21,7 +21,7 @@ public class WinFormSteps {
     public void test_win_app_driver() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("app", "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App");
-        calculatorSession = new WindowsDriver(new URL("http://192.168.1.3:4723"), capabilities);
+        calculatorSession = new WindowsDriver(new URL("http://127.0.0.1:4723"), capabilities);
         calculatorSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
         calculatorResult = calculatorSession.findElementByAccessibilityId("CalculatorResults");
