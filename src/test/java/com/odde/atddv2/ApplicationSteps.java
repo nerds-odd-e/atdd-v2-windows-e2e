@@ -56,6 +56,8 @@ public class ApplicationSteps {
 
     @那么("{string}登录成功")
     public void 登录成功(String userName) {
+        browser.reset();
+        System.out.println("browser.getWebDriver().getPageSource() = " + browser.getWebDriver().getPageSource());
         browser.shouldHaveText("Welcome " + userName);
     }
 

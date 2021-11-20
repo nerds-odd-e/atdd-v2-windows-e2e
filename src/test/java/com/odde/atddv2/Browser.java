@@ -32,15 +32,17 @@ public class Browser {
     }
 
     public void inputTextByPlaceholder(String placeholder, String text) {
-        waitElement("//*[@placeholder='" + placeholder + "']").sendKeys(text);
+//        waitElement("//*[@placeholder='" + placeholder + "']").sendKeys(text);
+        waitElement("//*[@AutomationId='" + placeholder + "']").sendKeys(text);
     }
 
     public void clickByText(String text) {
-        waitElement(String.format("//*[normalize-space(@value)='%s' or normalize-space(text())='%s']", text, text)).click();
+//        waitElement(String.format("//*[normalize-space(@value)='%s' or normalize-space(text())='%s']", text, text)).click();
+        waitElement("//*[@AutomationId='" + text + "']").click();
     }
 
     public void shouldHaveText(String text) {
-        await().untilAsserted(() -> assertThat(getWebDriver().findElements(xpath("//*[text()='" + text + "']"))).isNotEmpty());
+        await().untilAsserted(() -> assertThat(getWebDriver().findElements(xpath("//*[@Name='" + text + "']"))).isNotEmpty());
     }
 
     @PreDestroy
@@ -54,9 +56,8 @@ public class Browser {
     @SneakyThrows
     public WebDriver createWebDriver() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("app", "C:\\Users\\Joseph\\code\\shop_app\\build\\windows\\runner\\Debug\\shop_app.exe");
+        capabilities.setCapability("app", "C:\\ClientServerProject\\软件系统客户端模版\\bin\\Debug\\软件系统客户端模版.exe");
         return new WindowsDriver(new URL("http://127.0.0.1:4723"), capabilities);
-//        return new RemoteWebDriver(new URL("http://web-driver.tool.net:4444"), DesiredCapabilities.chrome());
     }
 
     public void selectTextByPlaceholder(String placeholder, String text) {
@@ -80,5 +81,9 @@ public class Browser {
 
     private WebElement waitElement(String xpathExpression) {
         return await().until(() -> getWebDriver().findElement(xpath(xpathExpression)), Objects::nonNull);
+    }
+
+    public void reset() {
+        webDriver.switchTo().window(webDriver.getWindowHandles().iterator().next());
     }
 }
