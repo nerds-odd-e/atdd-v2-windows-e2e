@@ -20,6 +20,9 @@ import static org.openqa.selenium.By.xpath;
 public class WinForm {
 
     private WindowsDriver<WindowsElement> windowsDriver = null;
+    private String currentWindow;
+    @Value("${app.path:C:\\ClientServerProject\\软件系统客户端模版\\bin\\Debug\\软件系统客户端模版.exe}")
+    private String appPath;
 
     public void inputTextById(String id, String text) {
         waitElement("//*[@AutomationId='" + id + "']").sendKeys(text);
@@ -40,9 +43,6 @@ public class WinForm {
         }
     }
 
-    @Value("${app.path:C:\\ClientServerProject\\软件系统客户端模版\\bin\\Debug\\软件系统客户端模版.exe}")
-    private String appPath;
-
     @SneakyThrows
     public WindowsDriver<WindowsElement> createWinDriver() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -53,15 +53,22 @@ public class WinForm {
     public WebDriver getWindowsDriver() {
         if (windowsDriver == null)
             windowsDriver = createWinDriver();
+        currentWindow = getCurrentWindow();
         return windowsDriver;
+    }
+
+    @SneakyThrows
+    public void newPage() {
+        await().untilAsserted(() -> assertThat(currentWindow).isNotEqualTo(getCurrentWindow()));
+        currentWindow = getCurrentWindow();
+        windowsDriver.switchTo().window(currentWindow);
+    }
+
+    private String getCurrentWindow() {
+        return windowsDriver.getWindowHandles().iterator().next();
     }
 
     private WebElement waitElement(String xpathExpression) {
         return await().until(() -> getWindowsDriver().findElement(xpath(xpathExpression)), Objects::nonNull);
-    }
-
-    public void newPage() {
-        System.out.println(windowsDriver.getWindowHandles());
-        windowsDriver.switchTo().window(windowsDriver.getWindowHandles().iterator().next());
     }
 }

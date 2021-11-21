@@ -5,8 +5,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
-
 @Component
 public class WelcomePage {
     @Autowired
@@ -14,7 +12,6 @@ public class WelcomePage {
 
     @SneakyThrows
     public void open() {
-        TimeUnit.SECONDS.sleep(6);
         winForm.newPage();
     }
 
